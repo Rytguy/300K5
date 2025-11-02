@@ -203,7 +203,7 @@ button, a, input, select, textarea {
 
 .book-row {
   display: grid;
-  grid-template-columns: 60px 2fr 1fr 1fr 80px;
+  grid-template-columns: 50px 2fr 1fr 1fr 120px;
   gap: 1rem;
   padding: 1rem;
   margin-bottom: 0.75rem;
@@ -221,12 +221,12 @@ button, a, input, select, textarea {
 }
 
 .book-number {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 1rem;
+  font-weight: 600;
   color: #ffdfba;
   text-align: center;
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
