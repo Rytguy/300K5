@@ -161,11 +161,11 @@ function App() {
       await axios.post(`${API}/quotes`, {
         book_title: selectedBook,
         text: quoteForm.text,
-        user_id: currentUser,
+        user_id: quoteForm.user_id,
         discussion: quoteForm.discussion
       });
       toast.success("Quote added successfully");
-      setQuoteForm({ text: "", discussion: "" });
+      setQuoteForm({ text: "", discussion: "", user_id: 1 });
       setShowAddQuote(false);
       fetchQuotes();
     } catch (e) {
