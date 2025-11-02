@@ -137,9 +137,9 @@ button, a, input, select, textarea {
   z-index: 2;
 }
 
-[data-testid="main-tabs"] {
+.tabs-left {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 1rem;
   margin-bottom: 2rem;
   background: transparent;
@@ -166,6 +166,12 @@ button, a, input, select, textarea {
   background: linear-gradient(135deg, #b4a7d6 0%, #8b7fc7 100%);
   border-color: #b4a7d6;
   box-shadow: 0 4px 20px rgba(180, 167, 214, 0.4);
+}
+
+.add-book-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1.5rem;
 }
 
 .add-btn {
