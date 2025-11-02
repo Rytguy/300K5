@@ -275,18 +275,38 @@ button, a, input, select, textarea {
   padding: 0.5rem;
 }
 
+.book-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
 .book-actions button {
   background: transparent;
   border: none;
-  color: #ff9999;
   padding: 0.5rem;
   border-radius: 8px;
   transition: all 0.3s ease;
 }
 
 .book-actions button:hover {
-  background: rgba(255, 153, 153, 0.2);
   transform: scale(1.1);
+}
+
+.book-actions button:first-child {
+  color: #b4a7d6;
+}
+
+.book-actions button:first-child:hover {
+  background: rgba(180, 167, 214, 0.2);
+}
+
+.book-actions button:last-child {
+  color: #ff9999;
+}
+
+.book-actions button:last-child:hover {
+  background: rgba(255, 153, 153, 0.2);
 }
 
 .quotes-section {
