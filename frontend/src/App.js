@@ -33,7 +33,25 @@ function App() {
   useEffect(() => {
     fetchBooks();
     fetchQuotes();
-    fetchBooksWithQuotes();
+    
+    // Stardust effect
+    const handleMouseMove = (e) => {
+      const stardust = document.createElement('div');
+      stardust.className = 'stardust-particle';
+      stardust.style.left = e.clientX + 'px';
+      stardust.style.top = e.clientY + 'px';
+      document.body.appendChild(stardust);
+      
+      setTimeout(() => {
+        stardust.remove();
+      }, 1000);
+    };
+    
+    document.addEventListener('mousemove', handleMouseMove);
+    
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+    };
   }, []);
 
   const fetchBooks = async () => {
