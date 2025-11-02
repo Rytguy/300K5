@@ -185,7 +185,6 @@ function App() {
       await axios.delete(`${API}/quotes/${encodeURIComponent(bookTitle)}/${encodeURIComponent(quoteText)}`);
       toast.success("Quote deleted successfully");
       fetchQuotes();
-      fetchBooksWithQuotes();
     } catch (e) {
       console.error(e);
       toast.error("Failed to delete quote");
