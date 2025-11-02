@@ -40,6 +40,13 @@ function App() {
       stardust.className = 'stardust-particle';
       stardust.style.left = e.clientX + 'px';
       stardust.style.top = e.clientY + 'px';
+      
+      // Random direction for particle
+      const randomX = (Math.random() - 0.5) * 40;
+      const randomY = (Math.random() - 0.5) * 40 - 20;
+      stardust.style.setProperty('--tx', `${randomX}px`);
+      stardust.style.setProperty('--ty', `${randomY}px`);
+      
       document.body.appendChild(stardust);
       
       setTimeout(() => {
