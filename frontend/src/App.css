@@ -20,29 +20,35 @@ body {
 
 /* Custom Astronomy Cursor */
 * {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23b4a7d6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"32\" height=\"32\" viewBox=\"0 0 24 24\" fill=\"%23b4a7d6\"><path d=\"M3,3 L10,10 L7,10 L7,21 L21,7 L14,7 L3,3 Z\"/></svg>'), auto;
 }
 
 button, a, input, select, textarea {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="%23ffd89b" stroke="%23ffd89b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>'), pointer;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"32\" height=\"32\" viewBox=\"0 0 24 24\" fill=\"%23ffdfba\"><path d=\"M3,3 L10,10 L7,10 L7,21 L21,7 L14,7 L3,3 Z\"/></svg>'), pointer;
 }
 
-/* Stardust effect */
-.stardust-cursor {
+/* Stardust particle effect */
+.stardust-particle {
   position: fixed;
-  width: 10px;
-  height: 10px;
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 223, 186, 0.8) 0%, rgba(180, 167, 214, 0.4) 50%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 223, 186, 0.9) 0%, rgba(180, 167, 214, 0.6) 40%, transparent 70%);
   pointer-events: none;
   z-index: 9999;
-  animation: sparkle 1s infinite;
-  mix-blend-mode: screen;
+  animation: stardust-float 1s ease-out forwards;
+  box-shadow: 0 0 6px rgba(255, 223, 186, 0.6);
 }
 
-@keyframes sparkle {
-  0%, 100% { opacity: 0; transform: scale(0); }
-  50% { opacity: 1; transform: scale(1.5); }
+@keyframes stardust-float {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--tx, 20px), var(--ty, -20px)) scale(0);
+  }
 }
 
 .App::before {
