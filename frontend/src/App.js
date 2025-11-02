@@ -208,12 +208,12 @@ function App() {
 
   return (
     <div className="App min-h-screen">
-      <div className="stardust-cursor"></div>
       
       <div className="max-w-7xl mx-auto px-4 py-12">
         <h1 className="book-title" data-testid="main-heading">Books</h1>
         
-        <div className="user-toggle" data-testid="user-toggle">
+        <div className="user-toggle-inline" data-testid="user-toggle">
+          <span className="user-label">Adding as:</span>
           <Button
             data-testid="user-1-btn"
             onClick={() => setCurrentUser(1)}
@@ -231,53 +231,96 @@ function App() {
         </div>
 
         <Tabs defaultValue="books" className="tabs-container">
-          <TabsList data-testid="main-tabs">
+          <TabsList data-testid="main-tabs" className="tabs-left">
             <TabsTrigger value="books" data-testid="books-tab">Books</TabsTrigger>
             <TabsTrigger value="quotes" data-testid="quotes-tab">Quotes</TabsTrigger>
           </TabsList>
 
           <TabsContent value="books" data-testid="books-content">
-            <Dialog open={showAddBook} onOpenChange={setShowAddBook}>
-              <DialogTrigger asChild>
-                <Button className="add-btn" data-testid="add-book-btn">
-                  <Plus className="w-4 h-4" /> Add Book
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="dialog-content" data-testid="add-book-dialog">
+            <div className="add-book-container">
+              <Dialog open={showAddBook} onOpenChange={setShowAddBook}>
+                <DialogTrigger asChild>
+                  <Button className="add-btn" data-testid="add-book-btn">
+                    <Plus className="w-4 h-4" /> Add Book
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="dialog-content" data-testid="add-book-dialog">
+                  <DialogHeader>
+                    <DialogTitle>Add New Book</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <Input
+                      data-testid="book-title-input"
+                      placeholder="Book Title"
+                      value={bookForm.title}
+                      onChange={(e) => setBookForm({ ...bookForm, title: e.target.value })}
+                    />
+                    <Select
+                      value={bookForm.status}
+                      onValueChange={(value) => setBookForm({ ...bookForm, status: value })}
+                    >
+                      <SelectTrigger data-testid="book-status-select">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="To Read" data-testid="status-to-read">To Read</SelectItem>
+                        <SelectItem value="Reading" data-testid="status-reading">Reading</SelectItem>
+                        <SelectItem value="Completed" data-testid="status-completed">Completed</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <Input
+                      data-testid="book-rating-input"
+                      type="number"
+                      step="0.1"
+                      min="1"
+                      max="10"
+                      placeholder="Rating (1.0-10.0)"
+                      value={bookForm.rating}
+                      onChange={(e) => setBookForm({ ...bookForm, rating: parseFloat(e.target.value) })}
+                    />
+                    <Button onClick={addBook} className="w-full" data-testid="submit-book-btn">Add Book</Button>
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </div>
+            
+            {/* Edit Book Dialog */}
+            <Dialog open={showEditBook} onOpenChange={setShowEditBook}>
+              <DialogContent className="dialog-content" data-testid="edit-book-dialog">
                 <DialogHeader>
-                  <DialogTitle>Add New Book</DialogTitle>
+                  <DialogTitle>Edit Book</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4">
                   <Input
-                    data-testid="book-title-input"
+                    data-testid="edit-book-title-input"
                     placeholder="Book Title"
-                    value={bookForm.title}
-                    onChange={(e) => setBookForm({ ...bookForm, title: e.target.value })}
+                    value={editBookForm.title}
+                    onChange={(e) => setEditBookForm({ ...editBookForm, title: e.target.value })}
                   />
                   <Select
-                    value={bookForm.status}
-                    onValueChange={(value) => setBookForm({ ...bookForm, status: value })}
+                    value={editBookForm.status}
+                    onValueChange={(value) => setEditBookForm({ ...editBookForm, status: value })}
                   >
-                    <SelectTrigger data-testid="book-status-select">
+                    <SelectTrigger data-testid="edit-book-status-select">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="To Read" data-testid="status-to-read">To Read</SelectItem>
-                      <SelectItem value="Reading" data-testid="status-reading">Reading</SelectItem>
-                      <SelectItem value="Completed" data-testid="status-completed">Completed</SelectItem>
+                      <SelectItem value="To Read">To Read</SelectItem>
+                      <SelectItem value="Reading">Reading</SelectItem>
+                      <SelectItem value="Completed">Completed</SelectItem>
                     </SelectContent>
                   </Select>
                   <Input
-                    data-testid="book-rating-input"
+                    data-testid="edit-book-rating-input"
                     type="number"
                     step="0.1"
                     min="1"
                     max="10"
                     placeholder="Rating (1.0-10.0)"
-                    value={bookForm.rating}
-                    onChange={(e) => setBookForm({ ...bookForm, rating: parseFloat(e.target.value) })}
+                    value={editBookForm.rating}
+                    onChange={(e) => setEditBookForm({ ...editBookForm, rating: parseFloat(e.target.value) })}
                   />
-                  <Button onClick={addBook} className="w-full" data-testid="submit-book-btn">Add Book</Button>
+                  <Button onClick={submitEditBook} className="w-full" data-testid="submit-edit-book-btn">Update Book</Button>
                 </div>
               </DialogContent>
             </Dialog>
@@ -303,24 +346,19 @@ function App() {
                     </Select>
                   </div>
                   <div className="book-rating" data-testid={`book-rating-${book.number}`}>
-                    {editingBook === book.title ? (
-                      <Input
-                        type="number"
-                        step="0.1"
-                        min="1"
-                        max="10"
-                        value={book.rating}
-                        onChange={(e) => updateBook(book.title, { rating: parseFloat(e.target.value) })}
-                        onBlur={() => setEditingBook(null)}
-                        className="rating-input"
-                      />
-                    ) : (
-                      <div onClick={() => setEditingBook(book.title)} className="hexagon-rating">
-                        {renderHexagons(book.rating)}
-                      </div>
-                    )}
+                    <div className="hexagon-rating">
+                      {renderHexagons(book.rating)}
+                    </div>
                   </div>
                   <div className="book-actions">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleEditBook(book)}
+                      data-testid={`edit-book-${book.number}`}
+                    >
+                      <Edit2 className="w-4 h-4" />
+                    </Button>
                     <Button
                       variant="ghost"
                       size="sm"
@@ -352,10 +390,10 @@ function App() {
                     />
                     <Textarea
                       data-testid="quote-discussion-input"
-                      placeholder="Add your thoughts, discussions, or findings..."
+                      placeholder="Add your thoughts, discussions, or findings... (You can use markdown: **bold**, *italic*, - lists, 1. numbered lists)"
                       value={quoteForm.discussion}
                       onChange={(e) => setQuoteForm({ ...quoteForm, discussion: e.target.value })}
-                      rows={6}
+                      rows={8}
                     />
                     <Button onClick={addQuote} className="w-full" data-testid="submit-quote-btn">Add Quote</Button>
                   </div>
@@ -363,21 +401,21 @@ function App() {
               </Dialog>
 
               <div className="quotes-grid" data-testid="quotes-grid">
-                {booksWithQuotes.map((bookTitle) => (
+                {books.map((book) => (
                   <div
-                    key={bookTitle}
+                    key={book.title}
                     className="quote-book-card"
                     onClick={() => {
-                      setSelectedBook(bookTitle);
+                      setSelectedBook(book.title);
                       setShowAddQuote(true);
                     }}
-                    data-testid={`quote-book-card-${bookTitle}`}
+                    data-testid={`quote-book-card-${book.title}`}
                   >
-                    <h3>{bookTitle}</h3>
-                    <p>{getQuotesForBook(bookTitle).length} quotes</p>
+                    <h3>{book.title}</h3>
+                    <p>{getQuotesForBook(book.title).length} quotes</p>
                     
                     <div className="quotes-list" onClick={(e) => e.stopPropagation()}>
-                      {getQuotesForBook(bookTitle).map((quote, idx) => (
+                      {getQuotesForBook(book.title).map((quote, idx) => (
                         <Collapsible key={idx} className="quote-item" data-testid={`quote-item-${idx}`}>
                           <div className={`quote-text user-${quote.user_id}`} data-testid={`quote-text-${idx}`}>
                             "{quote.text}"
