@@ -82,15 +82,6 @@ function App() {
     }
   };
 
-  const fetchBooksWithQuotes = async () => {
-    try {
-      const response = await axios.get(`${API}/books-with-quotes`);
-      setBooksWithQuotes(response.data);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
   const addBook = async () => {
     if (!bookForm.title.trim()) {
       toast.error("Title is required");
