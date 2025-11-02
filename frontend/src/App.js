@@ -198,12 +198,17 @@ function App() {
   };
 
   const renderHexagons = (rating) => {
-    const count = Math.round(rating);
+    const fullHexagons = Math.floor(rating);
+    const hasFractional = rating % 1 !== 0;
+    
     return (
       <div className="flex gap-1">
-        {Array.from({ length: count }).map((_, i) => (
-          <Hexagon key={i} className="w-4 h-4" fill="currentColor" />
+        {Array.from({ length: fullHexagons }).map((_, i) => (
+          <Hexagon key={`full-${i}`} className="w-4 h-4" fill="currentColor" />
         ))}
+        {hasFractional && (
+          <Hexagon key="fractional" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" />
+        )}
       </div>
     );
   };
