@@ -104,11 +104,34 @@ function App() {
       await axios.put(`${API}/books/${encodeURIComponent(title)}`, updates);
       toast.success("Book updated successfully");
       setEditingBook(null);
+      setShowEditBook(false);
       fetchBooks();
     } catch (e) {
       console.error(e);
       toast.error("Failed to update book");
     }
+  };
+  
+  const handleEditBook = (book) => {
+    setEditBookForm({
+      title: book.title,
+      status: book.status,
+      rating: book.rating,
+      originalTitle: book.title
+    });
+    setShowEditBook(true);
+  };
+  
+  const submitEditBook = async () => {
+    if (!editBookForm.title.trim()) {
+      toast.error("Title is required");
+      return;
+    }
+    await updateBook(editBookForm.originalTitle, {
+      title: editBookForm.title,
+      status: editBookForm.status,
+      rating: editBookForm.rating
+    });
   };
 
   const deleteBook = async (title) => {
