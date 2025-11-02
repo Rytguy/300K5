@@ -91,47 +91,6 @@ button, a, input, select, textarea {
   letter-spacing: 0.05em;
 }
 
-.user-toggle-inline {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
-  position: relative;
-  z-index: 2;
-}
-
-.user-label {
-  color: #b4a7d6;
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-
-.user-toggle-inline button {
-  padding: 0.5rem 1.5rem;
-  border-radius: 50px;
-  background: rgba(22, 33, 62, 0.6);
-  border: 2px solid rgba(180, 167, 214, 0.3);
-  color: #e8e8f0;
-  font-weight: 500;
-  backdrop-filter: blur(12px);
-  transition: all 0.3s ease;
-  font-size: 0.9rem;
-}
-
-.user-toggle-inline button:hover {
-  background: rgba(180, 167, 214, 0.2);
-  border-color: #b4a7d6;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(180, 167, 214, 0.3);
-}
-
-.user-toggle-inline button.active {
-  background: linear-gradient(135deg, #b4a7d6 0%, #8b7fc7 100%);
-  border-color: #b4a7d6;
-  box-shadow: 0 4px 20px rgba(180, 167, 214, 0.4);
-}
-
 .tabs-container {
   position: relative;
   z-index: 2;
