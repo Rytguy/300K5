@@ -162,7 +162,6 @@ function App() {
       setQuoteForm({ text: "", discussion: "" });
       setShowAddQuote(false);
       fetchQuotes();
-      fetchBooksWithQuotes();
     } catch (e) {
       console.error(e);
       toast.error("Failed to add quote");
