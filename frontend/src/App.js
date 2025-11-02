@@ -217,24 +217,6 @@ function App() {
       
       <div className="max-w-7xl mx-auto px-4 py-12">
         <h1 className="book-title" data-testid="main-heading">Books</h1>
-        
-        <div className="user-toggle-inline" data-testid="user-toggle">
-          <span className="user-label">Adding as:</span>
-          <Button
-            data-testid="user-1-btn"
-            onClick={() => setCurrentUser(1)}
-            className={currentUser === 1 ? 'active' : ''}
-          >
-            User 1
-          </Button>
-          <Button
-            data-testid="user-2-btn"
-            onClick={() => setCurrentUser(2)}
-            className={currentUser === 2 ? 'active' : ''}
-          >
-            User 2
-          </Button>
-        </div>
 
         <Tabs defaultValue="books" className="tabs-container">
           <TabsList data-testid="main-tabs" className="tabs-left">
@@ -387,6 +369,18 @@ function App() {
                     <DialogTitle>Add Quote to {selectedBook}</DialogTitle>
                   </DialogHeader>
                   <div className="space-y-4">
+                    <Select
+                      value={quoteForm.user_id.toString()}
+                      onValueChange={(value) => setQuoteForm({ ...quoteForm, user_id: parseInt(value) })}
+                    >
+                      <SelectTrigger data-testid="quote-user-select">
+                        <SelectValue placeholder="Select User" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="1" data-testid="user-1-option">User 1</SelectItem>
+                        <SelectItem value="2" data-testid="user-2-option">User 2</SelectItem>
+                      </SelectContent>
+                    </Select>
                     <Textarea
                       data-testid="quote-text-input"
                       placeholder="Enter your favorite quote..."
