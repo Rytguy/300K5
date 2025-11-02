@@ -17,14 +17,16 @@ const API = `${BACKEND_URL}/api`;
 function App() {
   const [books, setBooks] = useState([]);
   const [quotes, setQuotes] = useState([]);
-  const [booksWithQuotes, setBooksWithQuotes] = useState([]);
   const [selectedBook, setSelectedBook] = useState(null);
   const [showAddBook, setShowAddBook] = useState(false);
   const [showAddQuote, setShowAddQuote] = useState(false);
+  const [showEditBook, setShowEditBook] = useState(false);
   const [currentUser, setCurrentUser] = useState(1);
+  const stardustRef = useRef([]);
   
   // Form states
   const [bookForm, setBookForm] = useState({ title: "", status: "To Read", rating: 5.0 });
+  const [editBookForm, setEditBookForm] = useState({ title: "", status: "To Read", rating: 5.0, originalTitle: "" });
   const [quoteForm, setQuoteForm] = useState({ text: "", discussion: "" });
   const [editingBook, setEditingBook] = useState(null);
 
