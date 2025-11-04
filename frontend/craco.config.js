@@ -5,11 +5,10 @@ require("dotenv").config();
 // Environment variable overrides
 const config = {
   disableHotReload: process.env.DISABLE_HOT_RELOAD === "true",
-  enableVisualEdits: process.env.REACT_APP_ENABLE_VISUAL_EDITS === "true",
   enableHealthCheck: process.env.ENABLE_HEALTH_CHECK === "true",
 };
 
-// Conditionally load health check modules only if enabled
+// Health check plugin module loads
 let WebpackHealthPlugin;
 let setupHealthEndpoints;
 let healthPluginInstance;
@@ -26,7 +25,6 @@ const webpackConfig = {
       '@': path.resolve(__dirname, 'src'),
     },
     configure: (webpackConfig) => {
-
       // Disable hot reload completely if environment variable is set
       if (config.disableHotReload) {
         // Remove hot reload related plugins
@@ -64,17 +62,11 @@ const webpackConfig = {
   },
 };
 
-// Only add babel plugin if visual editing is enabled
-if (config.enableVisualEdits) {
-  webpackConfig.babel = {
-    plugins: [babelMetadataPlugin],
-  };
-}
-
-    // Add health check endpoints if enabled
+// Setup devServer only for health check
+if (config.enableHealthCheck) {
+  webpackConfig.devServer = (devServerConfig) => {
     if (config.enableHealthCheck && setupHealthEndpoints && healthPluginInstance) {
       const originalSetupMiddlewares = devServerConfig.setupMiddlewares;
-
       devServerConfig.setupMiddlewares = (middlewares, devServer) => {
         // Call original setup if exists
         if (originalSetupMiddlewares) {
@@ -87,7 +79,6 @@ if (config.enableVisualEdits) {
         return middlewares;
       };
     }
-
     return devServerConfig;
   };
 }
