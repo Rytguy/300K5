@@ -19,6 +19,7 @@ body {
 }
 
 /* Custom Harry Potter Elder Wand Cursor */
+/* 
 * {
   cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><line x1="2" y1="18" x2="10" y2="2" stroke="%234a4a5e" stroke-width="1.8" stroke-linecap="round"/><line x1="2" y1="18" x2="10" y2="2" stroke="%23b4a7d6" stroke-width="0.8" stroke-linecap="round"/><circle cx="10" cy="2" r="1.5" fill="%23b4a7d6" opacity="0.8"/><circle cx="10.5" cy="2.5" r="0.5" fill="%23ffdfba"/></svg>'), auto;
 }
@@ -26,6 +27,7 @@ body {
 button, a, input, select, textarea {
   cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><line x1="2" y1="18" x2="10" y2="2" stroke="%234a4a5e" stroke-width="1.8" stroke-linecap="round"/><line x1="2" y1="18" x2="10" y2="2" stroke="%23ffdfba" stroke-width="0.8" stroke-linecap="round"/><circle cx="10" cy="2" r="1.5" fill="%23ffdfba" opacity="0.9"/><circle cx="10.5" cy="2.5" r="0.5" fill="%23fff"/><circle cx="8" cy="4" r="0.8" fill="%23b4a7d6" opacity="0.6"/><circle cx="11" cy="3" r="0.6" fill="%23ffd89b" opacity="0.5"/></svg>'), pointer;
 }
+*/
 
 /* Stardust particle effect */
 .stardust-particle {
