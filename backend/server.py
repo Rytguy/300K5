@@ -87,6 +87,18 @@ async def create_book(input: BookCreate):
     doc['created_at'] = doc['created_at'].isoformat()
     
     await db.books.insert_one(doc)
+
+    # --- This code auto-creates a blank quote for that book ---
+    blank_quote = {
+        'book_title': book_obj.title,
+        'text': '',  # Start with empty text, you can edit later in frontend
+        'user_id': 1,  # Or whatever your logic/user system is
+        'discussion': "",
+        'created_at': datetime.now(timezone.utc).isoformat()
+    }
+    await db.quotes.insert_one(blank_quote)
+    # ---
+    
     return book_obj
 
 @api_router.put("/books/{book_title}", response_model=Book)
