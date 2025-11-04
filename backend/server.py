@@ -128,6 +128,9 @@ async def delete_book(book_title: str):
             {"$set": {"number": idx}}
         )
     
+    # NOTE: The original code did not delete quotes here, which is why the quote card remained.
+    # The fix is purely on the frontend to ensure the quote card is rendered based on quotes, not books.
+    
     return {"message": "Book deleted successfully"}
 
 # Quotes endpoints
@@ -188,10 +191,16 @@ async def delete_quote(book_title: str, quote_text: str):
     
     return {"message": "Quote deleted successfully"}
 
-@api_router.get("/books-with-quotes")
+# MODIFIED ENDPOINT: Use aggregation to get distinct book titles from quotes
+@api_router.get("/books-with-quotes", response_model=List[str])
 async def get_books_with_quotes():
-    quotes = await db.quotes.find({}, {"_id": 0}).to_list(1000)
-    book_titles = list(set([q['book_title'] for q in quotes]))
+    # Use aggregation to get distinct book_title values from the quotes collection
+    pipeline = [
+        {"$group": {"_id": "$book_title"}},
+        {"$project": {"_id": 0, "book_title": "$_id"}}
+    ]
+    book_titles_docs = await db.quotes.aggregate(pipeline).to_list(1000)
+    book_titles = [doc['book_title'] for doc in book_titles_docs]
     return book_titles
 
 # Include the router in the main app
