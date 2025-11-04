@@ -9,15 +9,6 @@ const config = {
   enableHealthCheck: process.env.ENABLE_HEALTH_CHECK === "true",
 };
 
-// Conditionally load visual editing modules only if enabled
-let babelMetadataPlugin;
-let setupDevServer;
-
-if (config.enableVisualEdits) {
-  babelMetadataPlugin = require("./plugins/visual-edits/babel-metadata-plugin");
-  setupDevServer = require("./plugins/visual-edits/dev-server-setup");
-}
-
 // Conditionally load health check modules only if enabled
 let WebpackHealthPlugin;
 let setupHealthEndpoints;
@@ -79,14 +70,6 @@ if (config.enableVisualEdits) {
     plugins: [babelMetadataPlugin],
   };
 }
-
-// Setup dev server with visual edits and/or health check
-if (config.enableVisualEdits || config.enableHealthCheck) {
-  webpackConfig.devServer = (devServerConfig) => {
-    // Apply visual edits dev server setup if enabled
-    if (config.enableVisualEdits && setupDevServer) {
-      devServerConfig = setupDevServer(devServerConfig);
-    }
 
     // Add health check endpoints if enabled
     if (config.enableHealthCheck && setupHealthEndpoints && healthPluginInstance) {
