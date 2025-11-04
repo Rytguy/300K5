@@ -17,6 +17,7 @@ const API = `${BACKEND_URL}/api`;
 function App() {
   const [books, setBooks] = useState([]);
   const [quotes, setQuotes] = useState([]);
+  const [booksWithQuotes, setBooksWithQuotes] = useState([]); // NEW STATE
   const [selectedBook, setSelectedBook] = useState(null);
   const [showAddBook, setShowAddBook] = useState(false);
   const [showAddQuote, setShowAddQuote] = useState(false);
@@ -32,6 +33,7 @@ function App() {
   useEffect(() => {
     fetchBooks();
     fetchQuotes();
+    fetchBooksWithQuotes(); // NEW CALL
     
     // Stardust effect
     const handleMouseMove = (e) => {
@@ -75,6 +77,20 @@ function App() {
     }
   };
 
+  // NEW FUNCTION
+  const fetchBooksWithQuotes = async () => {
+    try {
+      const response = await axios.get(`${API}/books-with-quotes`);
+      setBooksWithQuotes(response.data);
+      localStorage.setItem('booksWithQuotes', JSON.stringify(response.data));
+    } catch (e) {
+      console.error(e);
+      const cached = localStorage.getItem('booksWithQuotes');
+      if (cached) setBooksWithQuotes(JSON.parse(cached));
+      toast.error("Failed to fetch books with quotes");
+    }
+  };
+
   const fetchQuotes = async () => {
     try {
       const response = await axios.get(`${API}/quotes`);
@@ -99,6 +115,7 @@ function App() {
       setBookForm({ title: "", status: "To Read", rating: 5.0 });
       setShowAddBook(false);
       fetchBooks();
+      fetchBooksWithQuotes(); // ADDED
     } catch (e) {
       console.error(e);
       toast.error("Failed to add book");
@@ -112,6 +129,7 @@ function App() {
       setEditingBook(null);
       setShowEditBook(false);
       fetchBooks();
+      fetchBooksWithQuotes(); // ADDED
     } catch (e) {
       console.error(e);
       toast.error("Failed to update book");
@@ -146,6 +164,8 @@ function App() {
       await axios.delete(`${API}/books/${encodeURIComponent(title)}`);
       toast.success("Book deleted successfully");
       fetchBooks();
+      // Do not call fetchBooksWithQuotes here, as the book is deleted, but the quote card should remain.
+      // The quote card will only disappear if the quote itself is deleted. // MODIFIED COMMENT
     } catch (e) {
       console.error(e);
       toast.error("Failed to delete book");
@@ -168,6 +188,7 @@ function App() {
       setQuoteForm({ text: "", discussion: "", user_id: 1 });
       setShowAddQuote(false);
       fetchQuotes();
+      fetchBooksWithQuotes(); // ADDED
     } catch (e) {
       console.error(e);
       toast.error("Failed to add quote");
@@ -191,6 +212,7 @@ function App() {
       await axios.delete(`${API}/quotes/${encodeURIComponent(bookTitle)}/${encodeURIComponent(quoteText)}`);
       toast.success("Quote deleted successfully");
       fetchQuotes();
+      fetchBooksWithQuotes(); // ADDED
     } catch (e) {
       console.error(e);
       toast.error("Failed to delete quote");
@@ -406,21 +428,21 @@ function App() {
               </Dialog>
 
               <div className="quotes-grid" data-testid="quotes-grid">
-                {books.map((book) => (
+                {booksWithQuotes.map((bookTitle) => ( // MODIFIED: Use booksWithQuotes
                   <div
-                    key={book.title}
+                    key={bookTitle}
                     className="quote-book-card"
                     onClick={() => {
-                      setSelectedBook(book.title);
+                      setSelectedBook(bookTitle);
                       setShowAddQuote(true);
                     }}
-                    data-testid={`quote-book-card-${book.title}`}
+                    data-testid={`quote-book-card-${bookTitle}`}
                   >
-                    <h3>{book.title}</h3>
-                    <p>{getQuotesForBook(book.title).length} quotes</p>
+                    <h3>{bookTitle}</h3>
+                    <p>{getQuotesForBook(bookTitle).length} quotes</p>
                     
                     <div className="quotes-list" onClick={(e) => e.stopPropagation()}>
-                      {getQuotesForBook(book.title).map((quote, idx) => (
+                      {getQuotesForBook(bookTitle).map((quote, idx) => ( // MODIFIED: Use bookTitle
                         <Collapsible key={idx} className="quote-item" data-testid={`quote-item-${idx}`}>
                           <div className={`quote-text user-${quote.user_id}`} data-testid={`quote-text-${idx}`}>
                             "{quote.text}"
