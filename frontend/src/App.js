@@ -302,12 +302,14 @@ function App() {
     const hasFractional = rating % 1 !== 0;
 
     return (
-      <>
+      <div className="flex gap-1">
         {Array.from({ length: fullHexagons }).map((_, i) => (
-          <Hexagon key={i} className="hexagon filled" />
+          <Hexagon key={`full-${i}`} className="w-4 h-4" fill="currentColor" />
         ))}
-        {hasFractional && <Hexagon className="hexagon half" />}
-      </>
+        {hasFractional && (
+          <Hexagon key="fractional" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" />
+        )}
+      </div>
     );
   };
 
