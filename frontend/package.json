@@ -1,6 +1,7 @@
 {
   "name": "frontend",
   "version": "0.1.0",
+  "homepage": "https://rytguy.github.io/300K5",
   "private": true,
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
