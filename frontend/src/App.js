@@ -18,6 +18,7 @@ function App() {
   const [books, setBooks] = useState([]);
   const [quotes, setQuotes] = useState([]);
   const [booksWithQuotes, setBooksWithQuotes] = useState([]); // NEW STATE
+  const [loading, setLoading] = useState(true);       // new
   const [selectedBook, setSelectedBook] = useState(null);
   const [showAddBook, setShowAddBook] = useState(false);
   const [showAddQuote, setShowAddQuote] = useState(false);
@@ -31,9 +32,44 @@ function App() {
   const [editingBook, setEditingBook] = useState(null);
 
   useEffect(() => {
-    fetchBooks();
-    fetchQuotes();
-    fetchBooksWithQuotes(); // NEW CALL
+    // fetchBooks();
+    // fetchQuotes();
+    // fetchBooksWithQuotes(); // NEW CALL
+
+    let cancelled = false;
+
+    async function loadAll() {
+      try {
+        setLoading(true);
+  
+        const booksPromise = axios.get(`${API}/books/`);
+        const quotesPromise = axios.get(`${API}/quotes/`);
+        const bwqPromise = axios.get(`${API}/books-with-quotes/`);
+  
+        const [booksRes, quotesRes, bwqRes] = await Promise.all([
+          booksPromise,
+          quotesPromise,
+          bwqPromise,
+        ]);
+  
+        if (cancelled) return;
+  
+        setBooks(booksRes.data);
+        setQuotes(quotesRes.data);
+        setBooksWithQuotes(bwqRes.data);
+      } catch (err) {
+        if (!cancelled) {
+          console.error(err);
+          toast.error("Failed to load data");
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    }
+  
+    loadAll();
     
     // Stardust effect
     const handleMouseMove = (e) => {
@@ -58,6 +94,7 @@ function App() {
     document.addEventListener('mousemove', handleMouseMove);
     
     return () => {
+      cancelled = true;
       document.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
